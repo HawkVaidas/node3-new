@@ -1,6 +1,4 @@
 
-
-// console.log("Ladas");
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -30,9 +28,14 @@ let cars = [
         },
    ]; 
    app.get("/getCars", function(req, res) {
+    if (cars.lenght) {
     const sortedCars = [...cars].sort((a, b) => a.year - b.year);
     return res.status(200).json({
         cars: sortedCars,
+    });
+    }
+    return res.status(404).json({
+        message: "cars array is empty",
     });
     });
 //----------------------------------------------------------
@@ -66,11 +69,10 @@ app.get("/getCarById/:id", function(req, res) {
             response: "cars is deleted",
         });
         });
+//------------------------------------------------------------
 
 app.post("/insertCars", function(req, res) {
-    // console.log(req.body);
     const id = req.body.id;
-
     const existingCar = cars.find((car) => {
         return car.id === id;                      
     });
